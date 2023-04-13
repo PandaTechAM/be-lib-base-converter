@@ -9,7 +9,21 @@
         <PackageIcon>pandatech.png</PackageIcon>
         <RepositoryUrl>https://github.com/PandaTechAM/BaseConverter.git</RepositoryUrl>
         <PackageTags>Base10 Base 36 Converter</PackageTags>
+        <Description>This project provides a class called PandaBaseConverter that can convert a number from base 10 to base 36 and vice versa.</Description>
+        <PackageProjectUrl></PackageProjectUrl>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Include="..\pandatech.png">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+      <None Include="..\README.md">
+        <Pack>True</Pack>
+        <PackagePath>\</PackagePath>
+      </None>
+    </ItemGroup>
 
     <ItemGroup>
       <None Update="pandatech.png">

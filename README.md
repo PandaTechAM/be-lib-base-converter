@@ -37,12 +37,12 @@ The resulting **number** will be the decimal representation of the number in bas
 ```csharp
 public class MyDto
 {
-    [PandaJsonConverter(typeof(PandaBaseConverter))]
+    [JsonConverter(typeof(PandaBaseConverter))]
     public long Id { get; set; }
 }
 ```
 
-In this case we will work in code with Id as long, but in json it will be as string.
+In this case we will work in code with Id as long, but in json it will be as base 36 string.
 
 ## Configuration
 

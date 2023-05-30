@@ -37,7 +37,7 @@ The resulting **number** will be the decimal representation of the number in bas
 ```csharp
 public class MyDto
 {
-    [JsonConverter(typeof(PandaBaseConverter))]
+    [JsonConverter(typeof(PandaJsonBaseConverter))]
     public long Id { get; set; }
 }
 ```

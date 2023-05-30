@@ -32,6 +32,18 @@ long number = baseConverter.Base36ToBase10(base36Number);
 
 The resulting **number** will be the decimal representation of the number in base 36.
 
+## Using in DTOs
+
+```csharp
+public class MyDto
+{
+    [PandaJsonConverter(typeof(PandaBaseConverter))]
+    public long Id { get; set; }
+}
+```
+
+In this case we will work in code with Id as long, but in json it will be as string.
+
 ## Configuration
 
 By default, the **PandaBaseConverter** class uses the characters "0123456789abcdefghijklmnopqrstuvwxyz" for base 36 conversion. You can configure the character set used by setting the ***BASE36_CHARS** environment variable to a string containing the desired characters.
@@ -45,3 +57,4 @@ The resulting **number** will be the decimal representation of the number in bas
 ## Error Handling
 
 If the input to either conversion method is invalid, an **ArgumentException** will be thrown with an appropriate error message. The message will also be printed to the console.
+

@@ -22,7 +22,7 @@ public class UnitTests
     public void Base10ToBase36_ThrowsException_WhenNegativeBase10ValueIsUsed()
     {
         var converter = new BaseConverter.PandaBaseConverter();
-        Assert.Throws<System.ArgumentException>(() => converter.Base10ToBase36(-1));
+        Assert.Throws<ArgumentException>(() => converter.Base10ToBase36(-1));
     }
 
     [Fact]
@@ -43,6 +43,6 @@ public class UnitTests
     public void Base36ToBase10_ThrowsException_WhenInvalidBase36CharacterIsUsed()
     {
         var converter = new BaseConverter.PandaBaseConverter();
-        Assert.Throws<System.ArgumentException>(() => converter.Base36ToBase10("21i3v#"));
+        Assert.Throws<ArgumentException>(() => converter.Base36ToBase10("21i3v#"));
     }
 }

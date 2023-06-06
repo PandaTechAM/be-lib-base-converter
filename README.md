@@ -4,19 +4,13 @@ This project provides a class called **PandaBaseConverter** that can convert a n
 
 ## Usage
 
-To use the **PandaBaseConverter** class, first create an instance of it:
-
-```cs
-var baseConverter = new PandaBaseConverter();
-```
-
 ## Base 10 to Base 36
 
 To convert a number from base 10 to base 36, call the **Base10ToBase36** method, passing in the number as a **long**
 
 ```cs
 long number = 12345;
-string base36Number = baseConverter.Base10ToBase36(number);
+string base36Number = BaseConverter.Base10ToBase36(number);
 ```
 
 The resulting **base36Number** will be a string representation of the number in base 36.
@@ -27,7 +21,7 @@ To convert a number from base 36 to base 10, call the **Base36ToBase10** method,
 
 ```cs
 string base36Number = "2n9";
-long number = baseConverter.Base36ToBase10(base36Number);
+long number = BaseConverter.Base36ToBase10(base36Number);
 ```
 
 The resulting **number** will be the decimal representation of the number in base 36.
@@ -39,6 +33,16 @@ public class MyDto
 {
     [JsonConverter(typeof(PandaJsonBaseConverter))]
     public long Id { get; set; }
+}
+```
+## Using in controllers
+
+```csharp
+[HttpGet("{id}")]
+public async Task<ActionResult<MyDto>> Get([PandaJsonBaseConverter] long id)
+{
+    var myDto = await _myService.Get(id);
+    return Ok(myDto);
 }
 ```
 

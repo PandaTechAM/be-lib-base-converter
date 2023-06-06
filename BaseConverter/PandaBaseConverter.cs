@@ -1,15 +1,10 @@
 ﻿namespace BaseConverter;
 
-public class PandaBaseConverter
+public static class PandaBaseConverter
 {
-    public PandaBaseConverter()
-    {
-        _base36Chars = Environment.GetEnvironmentVariable("BASE36_CHARS") ?? "0123456789abcdefghijklmnopqrstuvwxyz";
-    }
+    private static string _base36Chars = Environment.GetEnvironmentVariable("BASE36_CHARS") ?? "0123456789abcdefghijklmnopqrstuvwxyz";;
 
-    readonly string _base36Chars;
-
-    public string Base10ToBase36(long base10Number)
+    public static string Base10ToBase36(long base10Number)
     {
         var base36 = "";
 
@@ -41,7 +36,7 @@ public class PandaBaseConverter
         }
     }
 
-    public long Base36ToBase10(string base36String)
+    public static long Base36ToBase10(string base36String)
     {
         long base10Value = 0;
         var power = 0;

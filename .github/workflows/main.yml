@@ -21,10 +21,10 @@ jobs:
         dotnet-version: ${{ matrix.dotnet-version }}
         
     - name: Build
-      run: dotnet build ./BaseConverter/BaseConverter
+      run: dotnet build ./BaseConverter/BaseConverter.csproj
       
     - name: Pack
-      run: dotnet pack ./BaseConverter/BaseConverter --output nupkgs
+      run: dotnet pack ./BaseConverter/BaseConverter.csproj --output nupkgs
       
     - name: Publish
       run: dotnet nuget push ./nupkgs/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json

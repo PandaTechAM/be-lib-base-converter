@@ -4,8 +4,13 @@ public static class PandaBaseConverter
 {
     private static readonly string Base36Chars = Environment.GetEnvironmentVariable("BASE36_CHARS") ?? "0123456789abcdefghijklmnopqrstuvwxyz";
 
-    public static string Base10ToBase36(long base10Number)
+    public static string? Base10ToBase36(long? base10Number)
     {
+        if (base10Number == null)
+        {
+            return null;
+        }
+        
         var base36 = "";
 
         try
@@ -36,8 +41,13 @@ public static class PandaBaseConverter
         }
     }
 
-    public static long Base36ToBase10(string base36String)
+    public static long? Base36ToBase10(string? base36String)
     {
+        if (base36String == null)
+        {
+            return null;
+        }
+        
         long base10Value = 0;
         var power = 0;
 

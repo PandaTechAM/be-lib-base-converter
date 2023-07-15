@@ -8,7 +8,7 @@ public class PandaParameterBaseConverter : Attribute, IParameterModelConvention
 {
     public void Apply(ParameterModel parameter)
     {
-        if (parameter.ParameterType != typeof(long)) throw new Exception("Parameter type must be long");
+        if (parameter.ParameterType != typeof(long?)) throw new Exception("Parameter type must be long?");
         parameter.BindingInfo ??= new BindingInfo();
         parameter.BindingInfo.BinderType = typeof(StringToLongModelBinder);
     }
@@ -26,10 +26,10 @@ public class PandaParameterBaseConverter : Attribute, IParameterModelConvention
             bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
 
             var valueAsString = valueProviderResult.FirstValue;
-            if (string.IsNullOrEmpty(valueAsString))
-            {
-                return Task.CompletedTask;
-            }
+            //if (string.IsNullOrEmpty(valueAsString))
+            //{
+            //    return Task.CompletedTask;
+            //}
 
             var result = PandaBaseConverter.Base36ToBase10(valueAsString);
             bindingContext.Result = ModelBindingResult.Success(result);

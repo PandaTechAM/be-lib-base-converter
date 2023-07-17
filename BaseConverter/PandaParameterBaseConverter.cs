@@ -9,7 +9,7 @@ public class PandaParameterBaseConverter : Attribute, IParameterModelConvention
     public void Apply(ParameterModel parameter)
     {
         if (parameter.ParameterType != typeof(long) || parameter.ParameterType != typeof(long?)) 
-            throw new Exception("Parameter type must be long?");
+            throw new Exception("Parameter type must be long or long?");
         parameter.BindingInfo ??= new BindingInfo();
         parameter.BindingInfo.BinderType = typeof(StringToLongModelBinder);
     }

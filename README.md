@@ -39,7 +39,7 @@ public class MyDto
 
 ```csharp
 [HttpGet("{id}")]
-public async Task<ActionResult<MyDto>> Get([PandaJsonBaseConverter] long id)
+public async Task<ActionResult<MyDto>> Get([PandaParameterBaseConverter] long id)
 {
     var myDto = await _myService.Get(id);
     return Ok(myDto);
@@ -62,3 +62,14 @@ The resulting **number** will be the decimal representation of the number in bas
 
 If the input to either conversion method is invalid, an **ArgumentException** will be thrown with an appropriate error message. The message will also be printed to the console.
 
+## Prgram.cs
+
+to use PandaParameterBaseConverter in swagger, add the following code to Program.cs
+```cs
+
+builder.Services.AddSwaggerGen(
+    options => 
+        options.ParameterFilter<PandaParameterBaseConverter>()
+    );
+    
+```

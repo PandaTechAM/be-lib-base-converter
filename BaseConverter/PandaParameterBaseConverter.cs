@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BaseConverter;
 
 [AttributeUsage(AttributeTargets.Parameter)]
-public class PandaParameterBaseConverter : Attribute, IParameterModelConvention
+public class PandaParameterBaseConverter : Attribute, IParameterModelConvention, IParameterFilter
 {
     
     public void Apply(ParameterModel parameter)
@@ -13,9 +16,10 @@ public class PandaParameterBaseConverter : Attribute, IParameterModelConvention
             throw new Exception("Parameter type must be long or long?");
         parameter.BindingInfo ??= new BindingInfo();
         parameter.BindingInfo.BinderType = typeof(StringToLongModelBinder);
+        
     }
 
-    private class StringToLongModelBinder : IModelBinder
+    public class StringToLongModelBinder : IModelBinder
     {
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -28,14 +32,23 @@ public class PandaParameterBaseConverter : Attribute, IParameterModelConvention
             bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
 
             var valueAsString = valueProviderResult.FirstValue;
-            if (string.IsNullOrEmpty(valueAsString) && bindingContext.ModelType == typeof(long))
+            if (string.IsNullOrEmpty(valueAsString))
             {
                 return Task.CompletedTask;
             }
 
-            var result = PandaBaseConverter.Base36ToBase10(valueAsString);
-            bindingContext.Result = ModelBindingResult.Success(result);
+            // Simply assign the base36 string value to the parameter
+            bindingContext.Result = ModelBindingResult.Success(valueAsString);
             return Task.CompletedTask;
+        }
+    }
+
+    public void Apply(OpenApiParameter parameter, ParameterFilterContext context)
+    {
+        if (context.ParameterInfo.CustomAttributes.Any(x => x.AttributeType == typeof(PandaParameterBaseConverter)))
+        {
+            parameter.Schema.Type = "string";
+            parameter.Schema.Format = "[0-9a-z]+";
         }
     }
 }

@@ -37,8 +37,8 @@ public class PandaParameterBaseConverter : Attribute, IParameterModelConvention,
                 return Task.CompletedTask;
             }
 
-            // Simply assign the base36 string value to the parameter
-            bindingContext.Result = ModelBindingResult.Success(valueAsString);
+            var result = PandaBaseConverter.Base36ToBase10(valueAsString);
+            bindingContext.Result = ModelBindingResult.Success(result);
             return Task.CompletedTask;
         }
     }

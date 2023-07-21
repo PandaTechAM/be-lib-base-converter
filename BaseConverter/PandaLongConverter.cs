@@ -4,17 +4,16 @@ using System.Text.Json.Serialization;
 
 public class MyDataModel
 {
-    [PandaLongConverter]
+    [PandaPropertyBaseConverter]
     public long MyLongValue { get; set; }
 
-    [PandaLongConverter]
+    [PandaPropertyBaseConverter]
     public long? MyNullableLongValue { get; set; }
 }
 
-public abstract class PandaJsonBaseConverter<T> : JsonConverter<T>
+internal class PandaJsonBaseConverter<T> : JsonConverter<T>
 {
-    protected abstract T ReadValue(ref Utf8JsonReader reader);
-
+    protected T ReadValue(ref Utf8JsonReader reade
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return ReadValue(ref reader);
@@ -36,7 +35,7 @@ public abstract class PandaJsonBaseConverter<T> : JsonConverter<T>
     }
 }
 
-public class RequiredLongConverter : PandaJsonBaseConverter<long>
+internal class PandaJsonNotNullableBaseConverter : PandaJsonBaseConverter<long>
 {
     protected override long ReadValue(ref Utf8JsonReader reader)
     {
@@ -50,7 +49,7 @@ public class RequiredLongConverter : PandaJsonBaseConverter<long>
     }
 }
 
-public class RequiredNullableLongConverter : PandaJsonBaseConverter<long?>
+internal class PandaJsonNullableBaseConverter : PandaJsonBaseConverter<long?>
 {
     protected override long? ReadValue(ref Utf8JsonReader reader)
     {
@@ -69,7 +68,7 @@ public class RequiredNullableLongConverter : PandaJsonBaseConverter<long?>
 }
 
 [AttributeUsage(AttributeTargets.Property)]
-public class PandaLongConverterAttribute : JsonConverterAttribute
+public class PandaPropertyBaseConverterAttribute : JsonConverterAttribute
 {
     public override JsonConverter CreateConverter(Type typeToConvert)
     {

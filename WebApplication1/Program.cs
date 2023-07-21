@@ -2,7 +2,7 @@ using BaseConverter;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.OpenApi.Models;
-using static BaseConverter.PandaParameterBaseConverter;
+using static BaseConverter.PandaParameterBaseConverterAttribute;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +13,7 @@ builder.Services.AddControllers(  );
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
     options => 
-        options.ParameterFilter<PandaParameterBaseConverter>()
+        options.ParameterFilter<PandaParameterBaseConverterAttribute>()
     );
 
 var app = builder.Build();

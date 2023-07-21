@@ -30,6 +30,4 @@ public class WeatherForecastController : ControllerBase
     {
         return Ok(i);
     }
-    
-    
 }

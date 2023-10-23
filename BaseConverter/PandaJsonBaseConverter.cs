@@ -25,9 +25,16 @@ public class PandaJsonBaseConverterNotNullable : JsonConverter<long>
     public override long Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
-        JsonSerializerOptions options) =>
-        PandaBaseConverter.Base36ToBase10(reader.GetString()) ??
-        throw new ArgumentException("Null value is not allowed");
+        JsonSerializerOptions options)
+    {
+        if(reader.GetString() is null)
+            throw new ArgumentException($"Null value is not allowed for type {typeToConvert.Name}");
+
+        if (reader.GetString()!.Contains('-'))
+            throw new ArgumentException($"Value can't be less than 0 for type {typeToConvert.Name}");
+
+        return PandaBaseConverter.Base36ToBase10(reader.GetString())!.Value;
+    }
 
     public override void Write(Utf8JsonWriter writer, long value, JsonSerializerOptions options)
     {

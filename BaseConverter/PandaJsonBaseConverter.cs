@@ -7,7 +7,7 @@ namespace BaseConverter;
 public class PandaJsonBaseConverterNullable : JsonConverter<long?>
 {
     private string PropertyName { get; set; }
-
+    
     public PandaJsonBaseConverterNullable([CallerMemberName] string caller = "")
     {
         PropertyName = caller;
@@ -31,10 +31,15 @@ public class PandaJsonBaseConverterNullable : JsonConverter<long?>
 public class PandaJsonBaseConverterNotNullable : JsonConverter<long>
 {
     private string PropertyName { get; set; }
-
+    
     public PandaJsonBaseConverterNotNullable([CallerMemberName] string caller = "")
     {
         PropertyName = caller;
+    }
+
+    public PandaJsonBaseConverterNotNullable()
+    {
+        PropertyName = "";
     }
 
     public override long Read(
@@ -43,15 +48,15 @@ public class PandaJsonBaseConverterNotNullable : JsonConverter<long>
         JsonSerializerOptions options)
     {
         if (string.IsNullOrWhiteSpace(reader.GetString()))
-            throw new ArgumentException($"Null value is not allowed for property {PropertyName}({typeToConvert.Name})");
+            throw new ArgumentException($"Null value is not allowed for property ({typeToConvert.Name})");
 
         if (string.IsNullOrEmpty(reader.GetString()))
             throw new ArgumentException(
-                $"Empty value is not allowed for property {PropertyName}({typeToConvert.Name})");
+                $"Empty value is not allowed for property ({typeToConvert.Name})");
 
         if (reader.GetString()!.Contains('-'))
             throw new ArgumentException(
-                $"Value can't be less than 0 for property {PropertyName}({typeToConvert.Name})");
+                $"Value can't be less than 0 for property ({typeToConvert.Name})");
 
         return PandaBaseConverter.Base36ToBase10(reader.GetString())!.Value;
     }

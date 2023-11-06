@@ -11,9 +11,9 @@ public class MyDataModel
     public long? MyNullableLongValue { get; set; }
 }
 
-internal class PandaJsonBaseConverter<T> : JsonConverter<T>
+internal abstract class PandaJsonBaseConverter<T> : JsonConverter<T>
 {
-    protected T ReadValue(ref Utf8JsonReader reade
+    protected abstract T ReadValue(ref Utf8JsonReader reade);
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return ReadValue(ref reader);

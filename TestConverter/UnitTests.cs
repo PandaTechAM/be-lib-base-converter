@@ -58,7 +58,7 @@ public class UnitTests
     {
         var exception = Assert.Throws<ArgumentException>(() => JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": null,\"NullableProperty\": null}"));
         
-        Assert.Equal("Null value is not allowed for type Int64", exception.Message);
+        Assert.Equal("Null value is not allowed for property NotNullableProperty", exception.Message);
     }
     
     [Fact]
@@ -66,7 +66,7 @@ public class UnitTests
     {
         var exception = Assert.Throws<ArgumentException>(() => JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"-15\",\"NullableProperty\": null}"));
         
-        Assert.Equal("Value can't be less than 0 for type Int64", exception.Message);
+        Assert.Equal("Value can't be less than 0 for property NotNullableProperty", exception.Message);
     }
     
     [Fact]

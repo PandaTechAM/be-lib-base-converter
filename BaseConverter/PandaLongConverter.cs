@@ -16,11 +16,20 @@ internal  class PandaJsonBaseConverter<T> : JsonConverter<T>
 {
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        var method = typeof(PandaBaseConverter).GetMethod("Base36ToBase10");
+        if(reader.TokenType != JsonTokenType.String)
+            throw new ArgumentException($"Wrong value for property ({typeToConvert.Name})");
 
-        var ss = reader.GetString();
+        if (string.IsNullOrWhiteSpace(reader.GetString()) || string.IsNullOrEmpty(reader.GetString()))
+            throw new ArgumentException($"Null/Empty value is not allowed for property ({typeToConvert.Name})");
+
+        var value = reader.GetString();
         
-        var call = Expression.Call(null, method, Expression.Constant(ss));
+        if (value!.Contains('-') || value == "0")
+            throw new ArgumentException($"The Value can't be less than 1 for property ({typeToConvert.Name})");
+        
+        var method = typeof(PandaBaseConverter).GetMethod("Base36ToBase10");
+        
+        var call = Expression.Call(null, method, Expression.Constant(value));
 
         var lamda = Expression.Lambda<Func<T>>(
             Expression.Convert(call, typeof(T)));

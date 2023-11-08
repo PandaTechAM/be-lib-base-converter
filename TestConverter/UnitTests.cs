@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using BaseConverter;
@@ -44,11 +43,12 @@ public class UnitTests
     {
         Assert.Throws<ArgumentException>(() => PandaBaseConverter.Base36ToBase10("21i3v#"));
     }
-    
+
     public class Model
     {
         [JsonConverter(typeof(PandaJsonBaseConverterNotNullable))]
         public long NotNullableProperty { get; set; }
+
         [JsonConverter(typeof(PandaJsonBaseConverterNullable))]
         public long? NullableProperty { get; set; }
     }
@@ -56,19 +56,21 @@ public class UnitTests
     [Fact]
     public void PandaJsonBaseConverterNotNullable_Nullable_ArgumentException()
     {
-        var exception = Assert.Throws<ArgumentException>(() => JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": null,\"NullableProperty\": null}"));
-        
+        var exception = Assert.Throws<ArgumentException>(() =>
+            JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": null,\"NullableProperty\": null}"));
+
         Assert.Equal("Null value is not allowed for property NotNullableProperty", exception.Message);
     }
-    
+
     [Fact]
     public void PandaJsonBaseConverterNotNullable_Negative_Value_ArgumentException()
     {
-        var exception = Assert.Throws<ArgumentException>(() => JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"-15\",\"NullableProperty\": null}"));
-        
+        var exception = Assert.Throws<ArgumentException>(() =>
+            JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"-15\",\"NullableProperty\": null}"));
+
         Assert.Equal("Value can't be less than 0 for property NotNullableProperty", exception.Message);
     }
-    
+
     [Fact]
     public void PandaJsonBaseConverterNullable()
     {

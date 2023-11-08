@@ -8,14 +8,12 @@ namespace BaseConverter;
 [AttributeUsage(AttributeTargets.Parameter)]
 public class PandaParameterBaseConverterAttribute : Attribute, IParameterModelConvention, IParameterFilter
 {
-    
     public void Apply(ParameterModel parameter)
     {
         if (parameter.ParameterType != typeof(long) && parameter.ParameterType != typeof(long?))
             throw new Exception("Parameter type must be long or long?");
         parameter.BindingInfo ??= new BindingInfo();
         parameter.BindingInfo.BinderType = typeof(StringToLongModelBinder);
-        
     }
 
     public class StringToLongModelBinder : IModelBinder
@@ -44,7 +42,8 @@ public class PandaParameterBaseConverterAttribute : Attribute, IParameterModelCo
 
     public void Apply(OpenApiParameter parameter, ParameterFilterContext context)
     {
-        if (context.ParameterInfo.CustomAttributes.Any(x => x.AttributeType == typeof(PandaParameterBaseConverterAttribute)))
+        if (context.ParameterInfo.CustomAttributes.Any(x =>
+                x.AttributeType == typeof(PandaParameterBaseConverterAttribute)))
         {
             parameter.Schema.Type = "string";
             parameter.Schema.Format = "[0-9a-z]+";

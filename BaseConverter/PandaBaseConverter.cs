@@ -2,7 +2,8 @@
 
 public static class PandaBaseConverter
 {
-    private static readonly string Base36Chars = Environment.GetEnvironmentVariable("BASE36_CHARS") ?? "0123456789abcdefghijklmnopqrstuvwxyz";
+    private static readonly string Base36Chars =
+        Environment.GetEnvironmentVariable("BASE36_CHARS") ?? "0123456789abcdefghijklmnopqrstuvwxyz";
 
     public static string? Base10ToBase36(long? base10Number)
     {
@@ -10,7 +11,7 @@ public static class PandaBaseConverter
         {
             return null;
         }
-        
+
         var base36 = "";
 
         try
@@ -47,7 +48,7 @@ public static class PandaBaseConverter
         {
             return null;
         }
-        
+
         long base10Value = 0;
         var power = 0;
 
@@ -62,6 +63,7 @@ public static class PandaBaseConverter
             {
                 throw new ArgumentException("BASE36_CHARS must be 36 characters long");
             }
+
             for (var i = base36String.Length - 1; i >= 0; i--)
             {
                 var digitValue = Base36Chars.IndexOf(base36String[i]);

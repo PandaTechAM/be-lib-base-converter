@@ -1,20 +1,18 @@
 using BaseConverter;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using Microsoft.OpenApi.Models;
 using static BaseConverter.PandaParameterBaseConverterAttribute;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(  );
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
-    options => 
+    options =>
         options.ParameterFilter<PandaParameterBaseConverterAttribute>()
-    );
+);
 
 var app = builder.Build();
 
@@ -41,7 +39,7 @@ public class StringToLongModelBinderProvider : IModelBinderProvider
         {
             return new StringToLongModelBinder();
         }
-        
+
         return null;
     }
 }

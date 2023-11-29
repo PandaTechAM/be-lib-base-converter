@@ -1,5 +1,11 @@
 name: Deploy NuGet Package
 
+env:
+  PROJECT_PATH: './src/BaseConverter/BaseConverter.csproj'
+  OUTPUT_DIR: 'nupkgs'
+  NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
+  NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
 on:
   push:
     branches:
@@ -9,21 +15,21 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: ['7.x.x']
+        dotnet-version: [ '8.x.x' ]
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ matrix.dotnet-version }}
-        
-    - name: Build
-      run: dotnet build ./BaseConverter
-      
-    - name: Pack
-      run: dotnet pack ./BaseConverter --output nupkgs
-      
-    - name: Publish
-      run: dotnet nuget push ./nupkgs/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }}
+
+      - name: Pack
+        run: dotnet pack ${{ env.PROJECT_PATH }} --output ${{ env.OUTPUT_DIR }}
+
+      - name: Publish
+        run: dotnet nuget push ${{ env.OUTPUT_DIR }}/*.nupkg -k ${{ env.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE }}

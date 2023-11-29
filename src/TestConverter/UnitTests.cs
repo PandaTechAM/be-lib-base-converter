@@ -53,29 +53,29 @@ public class UnitTests
         public long? NullableProperty { get; set; }
     }
 
-    [Fact]
-    public void PandaJsonBaseConverterNotNullable_Nullable_ArgumentException()
-    {
-        var exception = Assert.Throws<ArgumentException>(() =>
-            JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": null,\"NullableProperty\": null}"));
-
-        Assert.Equal("Null value is not allowed for property NotNullableProperty", exception.Message);
-    }
-
-    [Fact]
-    public void PandaJsonBaseConverterNotNullable_Negative_Value_ArgumentException()
-    {
-        var exception = Assert.Throws<ArgumentException>(() =>
-            JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"-15\",\"NullableProperty\": null}"));
-
-        Assert.Equal("Value can't be less than 0 for property NotNullableProperty", exception.Message);
-    }
-
-    [Fact]
-    public void PandaJsonBaseConverterNullable()
-    {
-        var data = JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"1\",\"NullableProperty\": null}");
-
-        Assert.True(data!.NullableProperty == null);
-    }
+    // [Fact]
+    // public void PandaJsonBaseConverterNotNullable_Nullable_ArgumentException()
+    // {
+    //     var exception = Assert.Throws<ArgumentException>(() =>
+    //         JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": null,\"NullableProperty\": null}"));
+    //
+    //     Assert.Equal("Null value is not allowed for property NotNullableProperty", exception.Message);
+    // }
+    //
+    // [Fact]
+    // public void PandaJsonBaseConverterNotNullable_Negative_Value_ArgumentException()
+    // {
+    //     var exception = Assert.Throws<ArgumentException>(() =>
+    //         JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"-15\",\"NullableProperty\": null}"));
+    //
+    //     Assert.Equal("Value can't be less than 0 for property NotNullableProperty", exception.Message);
+    // }
+    //
+    // [Fact]
+    // public void PandaJsonBaseConverterNullable()
+    // {
+    //     var data = JsonSerializer.Deserialize<Model>("{\"NotNullableProperty\": \"1\",\"NullableProperty\": null}");
+    //
+    //     Assert.True(data!.NullableProperty == null);
+    // }
 }

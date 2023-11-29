@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConverter", "BaseConverter\BaseConverter.csproj", "{24958E26-6939-4271-A7B6-4E86A42E3ACB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConverter", "src\BaseConverter\BaseConverter.csproj", "{24958E26-6939-4271-A7B6-4E86A42E3ACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConverter", "TestConverter\TestConverter.csproj", "{78FF90AB-ACBF-45D3-9436-0DE1078BA973}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConverter", "src\TestConverter\TestConverter.csproj", "{78FF90AB-ACBF-45D3-9436-0DE1078BA973}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{01C89FE0-14D9-45D1-86C3-16842EBADEB3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "src\WebApplication1\WebApplication1.csproj", "{01C89FE0-14D9-45D1-86C3-16842EBADEB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

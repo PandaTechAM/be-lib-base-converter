@@ -2,8 +2,7 @@
 
 public static class PandaBaseConverter
 {
-    private static readonly string Base36Chars =
-        Environment.GetEnvironmentVariable("BASE36_CHARS") ?? "0123456789abcdefghijklmnopqrstuvwxyz";
+    public static string Base36Chars { get; set; } = "0123456789abcdefghijklmnopqrstuvwxyz";
 
     public static string? Base10ToBase36(long? base10Number)
     {

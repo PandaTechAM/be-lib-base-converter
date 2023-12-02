@@ -50,13 +50,15 @@ In this case we will work in code with Id as long, but in json it will be as bas
 
 ## Configuration
 
-By default, the **PandaBaseConverter** class uses the characters "0123456789abcdefghijklmnopqrstuvwxyz" for base 36 conversion. You can configure the character set used by setting the ***BASE36_CHARS** environment variable to a string containing the desired characters.
+By default, the **PandaBaseConverter** class uses the characters "0123456789abcdefghijklmnopqrstuvwxyz" for base 36 conversion. You can configure the character set used by doing following in program.cs.
 
-```cs
-export BASE36_CHARS="A32145789U0BCDEFGHIJKLMNOPQRSTVWXYZ6"
+```csharp
+var builder = WebApplication.CreateBuilder(args);
+
+var base36RandomCharset = "1adfgbhjklmnepqrstvwxyz23456789";
+
+builder.ConfigureBaseConverter(base36RandomCharset);
 ```
-
-The resulting **number** will be the decimal representation of the number in base 36.
 
 ## Error Handling
 

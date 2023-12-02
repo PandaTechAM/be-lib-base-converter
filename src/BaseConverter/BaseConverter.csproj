@@ -7,12 +7,12 @@
         <PackageIcon>pandatech.png</PackageIcon>
         <PackageReadmeFile>Readme.md</PackageReadmeFile>
         <Copyright>MIT</Copyright>
-        <Version>2.0.1</Version>
+        <Version>2.0.2</Version>
         <PackageId>PandaTech.BaseConverter</PackageId>
         <PackageTags>Base10 Base 36 Converter</PackageTags>
         <Description>This project provides a class called PandaBaseConverter that can convert a number from base 10 to base 36 and vice versa.</Description>
         <RepositoryUrl>https://github.com/PandaTechAM/BaseConverter.git</RepositoryUrl>
-        <PackageReleaseNotes>.net 8.0 update and restructure</PackageReleaseNotes>
+        <PackageReleaseNotes>New configuration option</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,6 +22,7 @@
 
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     </ItemGroup>
 

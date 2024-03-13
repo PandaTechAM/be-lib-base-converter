@@ -1,7 +1,7 @@
-using BaseConverter;
+using BaseConverter.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication1.Controllers;
+namespace BaseConverter.Demo.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -25,9 +25,21 @@ public class WeatherForecastController : ControllerBase
         return Ok(i);
     }
 
-    [HttpGet("[action]")]
-    public IActionResult GetSome2(long i)
+    [HttpPost("[action]")]
+    public IActionResult PostSome([FromBody] MyDataModel someClass)
     {
-        return Ok(i);
+        var response = new Dictionary<string, long>()
+        {
+            { "MyLongValue", someClass.MyLongValue },
+            { "MyNullableLongValue", (long)someClass.MyNullableLongValue! }
+        };
+        return Ok(response);
     }
+}
+
+public class MyDataModel
+{
+    [PandaPropertyBaseConverter] public long MyLongValue { get; set; }
+
+    [PandaPropertyBaseConverter] public long? MyNullableLongValue { get; set; }
 }

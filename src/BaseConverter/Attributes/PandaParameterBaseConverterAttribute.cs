@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BaseConverter;
+namespace BaseConverter.Attributes;
 
 [AttributeUsage(AttributeTargets.Parameter)]
 public class PandaParameterBaseConverterAttribute : Attribute, IParameterModelConvention, IParameterFilter
@@ -42,11 +42,10 @@ public class PandaParameterBaseConverterAttribute : Attribute, IParameterModelCo
 
     public void Apply(OpenApiParameter parameter, ParameterFilterContext context)
     {
-        if (context.ParameterInfo.CustomAttributes.Any(x =>
-                x.AttributeType == typeof(PandaParameterBaseConverterAttribute)))
-        {
-            parameter.Schema.Type = "string";
-            parameter.Schema.Format = "[0-9a-z]+";
-        }
+        if (context.ParameterInfo.CustomAttributes.All(x =>
+                x.AttributeType != typeof(PandaParameterBaseConverterAttribute))) return;
+        
+        parameter.Schema.Type = "string";
+        parameter.Schema.Format = "[0-9a-z]+";
     }
 }

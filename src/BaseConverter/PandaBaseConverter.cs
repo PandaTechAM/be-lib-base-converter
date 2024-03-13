@@ -1,81 +1,68 @@
-﻿namespace BaseConverter;
+﻿using System.Text;
+
+namespace BaseConverter;
 
 public static class PandaBaseConverter
 {
     public static string Base36Chars { get; set; } = "0123456789abcdefghijklmnopqrstuvwxyz";
 
-    public static string? Base10ToBase36(long? base10Number)
+    public static string Base10ToBase36(long base10Number)
     {
-        if (base10Number == null)
+        if (base10Number < 0)
         {
-            return null;
+            throw new ArgumentException("Base10 only accepts positive numbers");
         }
 
-        var base36 = "";
+        var builder = new StringBuilder();
 
-        try
+        while (base10Number > 0)
         {
-            if (base10Number < 0)
-            {
-                throw new ArgumentException("Base10 only accepts positive numbers");
-            }
-
-            if (Base36Chars.Length != 36)
-            {
-                throw new ArgumentException("BASE36_CHARS must be 36 characters long");
-            }
-
-            while (base10Number > 0)
-            {
-                var remainder = (int)(base10Number % 36);
-                base36 = Base36Chars[remainder] + base36;
-                base10Number /= 36;
-            }
-
-            return base36;
+            var remainder = (int)(base10Number % 36);
+            builder.Insert(0, Base36Chars[remainder]);
+            base10Number /= 36;
         }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine(e.Message);
-            throw;
-        }
+
+        return builder.ToString();
     }
 
-    public static long? Base36ToBase10(string? base36String)
+    public static string? Base10ToBase36(long? base10Number)
     {
-        if (base36String == null)
+        return base10Number.HasValue ? Base10ToBase36(base10Number.Value) : null;
+    }
+
+    public static long? Base36ToBase10(string? base36String = null)
+    {
+        if (base36String is null)
         {
             return null;
+        }
+
+        return Base36ToBase10NotNull(base36String);
+    }
+
+    public static long Base36ToBase10NotNull(string base36String)
+    {
+        if (string.IsNullOrEmpty(base36String))
+        {
+            throw new ArgumentException("Input string cannot be null or empty.", nameof(base36String));
+        }
+
+        if (!ValidateBase36Chars(base36String))
+        {
+            throw new ArgumentException("Base36 only accepts characters 0-9 and a-z", nameof(base36String));
         }
 
         long base10Value = 0;
-        var power = 0;
-
-        try
+        foreach (var c in base36String)
         {
-            if (base36String.Any(c => !Base36Chars.Contains(c)))
-            {
-                throw new ArgumentException("Base36 only accepts characters 0-9 and a-z");
-            }
-
-            if (Base36Chars.Length != 36)
-            {
-                throw new ArgumentException("BASE36_CHARS must be 36 characters long");
-            }
-
-            for (var i = base36String.Length - 1; i >= 0; i--)
-            {
-                var digitValue = Base36Chars.IndexOf(base36String[i]);
-                base10Value += digitValue * (long)Math.Pow(36, power);
-                power++;
-            }
-        }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine(e.Message);
-            throw;
+            base10Value = base10Value * 36 + Base36Chars.IndexOf(c);
         }
 
         return base10Value;
+    }
+
+    public static bool ValidateBase36Chars(this string base36String)
+    {
+        return base36String.All(c => Base36Chars.Contains(c));
     }
 }

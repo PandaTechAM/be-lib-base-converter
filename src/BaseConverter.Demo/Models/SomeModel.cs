@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models
+﻿using BaseConverter.Attributes;
+
+namespace BaseConverter.Demo.Models
 {
     public class SomeModel
     {

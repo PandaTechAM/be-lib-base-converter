@@ -35,10 +35,10 @@ into your .NET projects.
 
 ## 1.2. Installation
 
-To include `PandaBaseConverter` in your project, install it as a NuGet package:
+To include `Pandatech.BaseConverter` in your project, install it as a NuGet package:
 
 ```shell
-Install-Package PandaBaseConverter
+Install-Package Pandatech.BaseConverter
 ```
 
 ## 1.3. Basic Usage

@@ -43,7 +43,7 @@ Install-Package Pandatech.BaseConverter
 
 ## 1.3. Basic Usage
 
-Converting from Base 10 to Base 36
+Converting from Base 10 to Base 36 (2 overloads for nullable and non-nullable output)
 
 ```csharp
 long number = 12345;
@@ -51,11 +51,19 @@ string base36Number = BaseConverter.PandaBaseConverter.Base10ToBase36(number);
 // Output: base36Number = "9ix"
 ```
 
-Converting from Base 36 to Base 10
+Converting from Base 36 to Base 10 (nullable input and output)
 
 ```csharp
 string base36Number = "9ix";
-long number = BaseConverter.PandaBaseConverter.Base36ToBase10(base36Number);
+long? number = BaseConverter.PandaBaseConverter.Base36ToBase10(base36Number);
+// Output: number = 12345
+```
+
+Converting from Base 36 to Base 10 (non-nullable input and output)
+
+```csharp
+string base36Number = "9ix";
+long number = BaseConverter.PandaBaseConverter.Base36ToBase10NotNull(base36Number, false);
 // Output: number = 12345
 ```
 

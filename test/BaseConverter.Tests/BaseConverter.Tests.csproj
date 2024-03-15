@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BaseConverter\BaseConverter.csproj" />
+      <ProjectReference Include="..\..\src\BaseConverter\BaseConverter.csproj" />
     </ItemGroup>
 
  

@@ -2,7 +2,7 @@
 
 namespace BaseConverter;
 
-public static class DependencyInjection
+public static class WebApplicationBuilderExtensions
 {
     public static WebApplicationBuilder ConfigureBaseConverter(this WebApplicationBuilder builder,
         string base36Chars)

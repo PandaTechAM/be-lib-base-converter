@@ -2,7 +2,7 @@
 
 namespace BaseConverter.Attributes;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class PandaPropertyBaseConverterAttribute : JsonConverterAttribute
 {
     public override JsonConverter CreateConverter(Type typeToConvert)

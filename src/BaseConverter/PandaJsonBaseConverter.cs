@@ -19,8 +19,8 @@ internal class PandaJsonBaseConverter<T> : JsonConverter<T>
                 throw new ArgumentException($"Null/Empty value is not allowed for property ({typeToConvert.Name})");
         }
 
-        if (value!.Contains('-') || value == "0")
-            throw new ArgumentException($"The Value can't be less than 1 for property ({typeToConvert.Name})");
+        if (value!.Contains('-'))
+            throw new ArgumentException($"The value can't be less than 1 for property ({typeToConvert.Name})");
 
         var method = typeof(PandaBaseConverter).GetMethod("Base36ToBase10");
 

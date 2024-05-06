@@ -1,3 +1,5 @@
+using BaseConverter.Exceptions;
+
 namespace BaseConverter.Tests;
 
 public class ConverterTests
@@ -18,7 +20,7 @@ public class ConverterTests
     [Fact]
     public void Base10ToBase36_ThrowsException_WhenNegativeBase10ValueIsUsed()
     {
-        Assert.Throws<ArgumentException>(() => PandaBaseConverter.Base10ToBase36(-1));
+        Assert.Throws<InputValidationException>(() => PandaBaseConverter.Base10ToBase36(-1));
     }
 
     [Fact]
@@ -50,6 +52,6 @@ public class ConverterTests
     [Fact]
     public void Base36ToBase10_ThrowsException_WhenInvalidBase36CharacterIsUsed()
     {
-        Assert.Throws<ArgumentException>(() => PandaBaseConverter.Base36ToBase10("21i3v#"));
+        Assert.Throws<UnsupportedCharacterException>(() => PandaBaseConverter.Base36ToBase10("21i3v#"));
     }
 }

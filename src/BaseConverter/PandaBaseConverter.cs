@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using BaseConverter.Exceptions;
 
 namespace BaseConverter;
 
@@ -10,7 +11,7 @@ public static class PandaBaseConverter
     {
         if (base10Number < 0)
         {
-            throw new ArgumentException("Base10 only accepts positive numbers");
+            throw new InputValidationException("Base10 only accepts positive numbers");
         }
 
         var builder = new StringBuilder();
@@ -44,12 +45,12 @@ public static class PandaBaseConverter
     {
         if (string.IsNullOrEmpty(base36String))
         {
-            throw new ArgumentException("Input string cannot be null or empty.", nameof(base36String));
+            throw new InputValidationException("Input string cannot be null or empty.", nameof(base36String));
         }
 
         if (!ValidateBase36Chars(base36String))
         {
-            throw new ArgumentException("Base36 only accepts characters 0-9 and a-z", nameof(base36String));
+            throw new UnsupportedCharacterException("Base36 only accepts characters 0-9 and a-z", nameof(base36String));
         }
 
         long base10Value = 0;

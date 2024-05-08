@@ -10,18 +10,18 @@ internal class PandaJsonBaseConverter<T> : JsonConverter<T>
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.String)
-            throw new InputValidationException($"Wrong value for property ({typeToConvert.Name})");
+            throw new InputValidationException("Wrong property value", typeToConvert.Name);
 
         var value = reader.GetString();
 
         if (typeToConvert == typeof(long))
         {
             if (value?.Trim() == string.Empty)
-                throw new InputValidationException($"Null/Empty value is not allowed for property ({typeToConvert.Name})");
+                throw new InputValidationException("Null/Empty value is not allowed", typeToConvert.Name);
         }
 
         if (value!.Contains('-'))
-            throw new InputValidationException($"The value can't be less than 1 for property ({typeToConvert.Name})");
+            throw new InputValidationException("The value cannot be less than 1", typeToConvert.Name);
 
         var method = typeof(PandaBaseConverter).GetMethod("Base36ToBase10");
 

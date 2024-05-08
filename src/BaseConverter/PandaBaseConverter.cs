@@ -45,7 +45,7 @@ public static class PandaBaseConverter
     {
         if (string.IsNullOrEmpty(base36String))
         {
-            throw new InputValidationException("Input string cannot be null or empty.", nameof(base36String));
+            throw new InputValidationException("Input string cannot be null or empty", nameof(base36String));
         }
 
         if (!ValidateBase36Chars(base36String))

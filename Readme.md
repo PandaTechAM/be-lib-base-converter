@@ -1,78 +1,59 @@
-- [1. Pandatech.BaseConverter](#1-pandatechbaseconverter)
-  - [1.1. Features](#11-features)
-  - [1.2. Installation](#12-installation)
-  - [1.3. Basic Usage](#13-basic-usage)
-  - [1.4. Advanced Usage](#14-advanced-usage)
-    - [1.4.1. Customizing Base 36 Character Set](#141-customizing-base-36-character-set)
-    - [1.4.2. Integration with DTOs](#142-integration-with-dtos)
-    - [1.4.3. Controller Parameter Binding](#143-controller-parameter-binding)
-    - [1.4.4. Validation](#144-validation)
-    - [1.4.5. Swagger Integration](#145-swagger-integration)
-    - [1.4.6. Error Handling](#146-error-handling)
-  - [1.5. Contributing](#15-contributing)
-  - [1.6. License](#16-license)
+# Pandatech.BaseConverter
 
-# 1. Pandatech.BaseConverter
+`Pandatech.BaseConverter` is a powerful library designed for seamless base conversion between base 10 and base 36
+numeral systems. It addresses the common need in software development to obfuscate database primary keys stored as long
+integers by converting them into base 36 encoded strings, enhancing data confidentiality and avoiding direct exposure of
+entity IDs.
 
-The `Pandatech.BaseConverter` library offers robust and flexible base conversion functionalities, enabling seamless
-transformations between base 10 and base 36 numeral systems. Designed for simplicity and efficiency, it's an essential
-tool for applications requiring numeral system conversions, particularly useful in scenarios like generating concise,
-URL-friendly unique identifiers from numeric values. Available as a convenient NuGet package, it integrates effortlessly
-into your .NET projects.
+## Features
 
-## 1.1. Features
+- **Bidirectional Conversion**: Convert numbers between base 10 and base 36.
+- **Custom Character Set**: Configure the base 36 character set for tailored encoding.
+- **DTO Integration**: Simplify base 36 string usage in Data Transfer Objects (DTOs).
+- **Batch Conversion**: Convert lists of numbers between base 10 and base 36 efficiently.
+- **Swagger Support**: Integrate with Swagger for API documentation and testing.
+- **Validation**: Ensure data integrity with robust validation for base 36 inputs.
+- **Error Handling**: Clear and informative exceptions for invalid inputs.
 
-- **Bi-directional Conversion**: Supports converting numbers from base 10 to base 36 and vice versa.
-- **Custom Character Set Configuration**: Allows customization of the character set used for base 36 encoding, enabling
-  unique identifier generation tailored to specific requirements.
-- **Integration with Data Transfer Objects (DTOs)**: Facilitates the use of base 36 encoded strings in DTOs, enhancing
-  API usability and readability.
-- **Swagger Integration**: Ensures seamless integration with Swagger for API documentation and testing, with support for
-  custom parameter converters.
-- **Robust Validation**: Offers built-in validation for base 36 inputs, ensuring data integrity and error resilience.
-- **Exception Handling**: Provides clear and informative error messages for invalid inputs, aiding in troubleshooting
-  and debugging.
+## Installation
 
-## 1.2. Installation
-
-To include `Pandatech.BaseConverter` in your project, install it as a NuGet package:
+Add `Pandatech.BaseConverter` to your project via NuGet:
 
 ```shell
 Install-Package Pandatech.BaseConverter
+
 ```
 
-## 1.3. Basic Usage
+## Basic Usage
 
-Converting from Base 10 to Base 36 (2 overloads for nullable and non-nullable output)
+### Converting between Base 10 and Base 36
 
 ```csharp
 long number = 12345;
-string base36Number = BaseConverter.PandaBaseConverter.Base10ToBase36(number);
-// Output: base36Number = "9ix"
-```
+string base36Number = PandaBaseConverter.Base10ToBase36(number);
+// Output: "9ix"
 
-Converting from Base 36 to Base 10 (nullable input and output)
-
-```csharp
 string base36Number = "9ix";
-long? number = BaseConverter.PandaBaseConverter.Base36ToBase10(base36Number);
-// Output: number = 12345
+long? number = PandaBaseConverter.Base36ToBase10(base36Number);
+// Output: 12345
+
+long number = PandaBaseConverter.Base36ToBase10NotNull(base36Number);
+// Output: 12345
+
+var numbers = new List<long> { 12345, 67890 };
+var base36Numbers = PandaBaseConverter.Base10ListToBase36List(numbers);
+// Output: ["9ix", "1bqj"]
+
+var base36Numbers = new List<string> { "9ix", "1bqj" };
+var numbers = PandaBaseConverter.Base36ListToBase10List(base36Numbers);
+// Output: [12345, 67890]
 ```
 
-Converting from Base 36 to Base 10 (non-nullable input and output)
+## Advanced Usage
 
-```csharp
-string base36Number = "9ix";
-long number = BaseConverter.PandaBaseConverter.Base36ToBase10NotNull(base36Number, false);
-// Output: number = 12345
-```
+### Customizing Base 36 Character Set
 
-## 1.4. Advanced Usage
-
-### 1.4.1. Customizing Base 36 Character Set
-
-You can customize the character set used for base 36 encoding to suit your application's needs, for not exposing actual
-order:
+Customize the base 36 character set for your needs:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -80,75 +61,131 @@ var customCharset = "0123456789abcdefghijklmnopqrstuvwxyz";
 builder.Services.ConfigureBaseConverter(customCharset);
 ```
 
-### 1.4.2. Integration with DTOs
+### DTO Integration
 
-Decorate DTO properties with `[PandaPropertyBaseConverter]` to automatically handle base 36 encoding/decoding:
+Decorate DTO properties to handle automatic base 36 encoding/decoding:
 
 ```csharp
 public class MyDto
 {
-    [PandaPropertyBaseConverter]
+    [PropertyBaseConverter]
     public long Id { get; set; }
 }
 ```
 
-### 1.4.3. Controller Parameter Binding
+### Minimal API Parameter Binding
 
-Use `[PandaParameterBaseConverter]` to automatically resolve base 36 encoded parameters in controller actions:
+Use `QueryBaseConverter` and `PathBaseConverter` to automatically convert base 36 encoded parameters in minimal APIs:
 
 ```csharp
-[HttpGet("{id}")]
-public async Task<ActionResult<MyDto>> Get([PandaParameterBaseConverter] long id)
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+var groupApp = app.MapGroup("minimal");
+groupApp.MapGet("query", ([FromQuery] long id) => id)
+        .QueryBaseConverter("id");
+
+groupApp.MapGet("path/{id}", (long id) => id)
+        .PathBaseConverter("id");
+
+app.Run();
+```
+
+### Controller Parameter Binding
+
+Resolve base 36 encoded parameters in controller actions using `[ParameterBaseConverter]`:
+
+```csharp
+[ApiController]
+[Route("api")]
+public class ConverterController : ControllerBase
 {
-    // Your logic here
+    [HttpGet("query")]
+    public IActionResult GetFromQuery([ParameterBaseConverter, FromQuery] long id)
+    {
+        return Ok(id);
+    }
+
+    [HttpGet("path/{id}")]
+    public IActionResult GetFromPath([ParameterBaseConverter] long id)
+    {
+        return Ok(id);
+    }
 }
 ```
 
-### 1.4.4. Validation
+### Swagger Integration
 
-Validate base 36 inputs using the `ValidateBase36Chars` extension method:
-
-```csharp
-string base36Number = "9ix";
-bool isValid = base36Number.ValidateBase36Chars();
-// Output: isValid = true
-```
-
-### 1.4.5. Swagger Integration
+Integrate with Swagger for enhanced API documentation:
 
 ```csharp
 builder.Services.AddSwaggerGen(
     options =>
     {
-        options.ParameterFilter<PandaParameterBaseConverterAttribute>();
-        options.SchemaFilter<PandaPropertyBaseConverterSwaggerFilter>();
+        options.ParameterFilter<ParameterBaseConverter>();
+        options.SchemaFilter<PropertyBaseConverterFilter>();
     }
 );
 ```
 
-### 1.4.6. Error Handling
+## Error Handling
 
-The library employs `ArgumentException` to signal invalid inputs, equipped with descriptive messages to facilitate
-debugging:
+`Pandatech.BaseConverter` provides informative exceptions for handling various errors. Here's how you can manage them:
+
+### Supported Exceptions
+
+- **`UnsupportedCharacterException`**: Thrown when the input contains characters not supported by the current base 36
+  character set.
 
 ```csharp
-try
-{
-    var result = BaseConverter.PandaBaseConverter.Base36ToBase10("invalid-input");
-}
-catch (ArgumentException ex)
-{
-    Console.WriteLine(ex.Message);
-    // Handle the exception as needed
-}
+    try
+    {
+        var result = PandaBaseConverter.Base36ToBase10("invalid-input");
+    }
+    catch (UnsupportedCharacterException ex)
+    {
+        Console.WriteLine(ex.FullMessage);
+        // Output: "Message: Input contains unsupported characters. with Value: invalid-input"
+    }
+   ```
+
+- **`InputValidationException`**: Thrown when input validation fails, such as a negative number for base 10 to base 36
+  conversion.
+
+```csharp
+    try
+    {
+        var base36Number = PandaBaseConverter.Base10ToBase36(-12345);
+    }
+    catch (InputValidationException ex)
+    {
+        Console.WriteLine(ex.FullMessage);
+        // Output: "Message: Number must be non-negative. with Value: -12345"
+    }
 ```
 
-## 1.5. Contributing
+- **`BaseConverterException`**: The base exception class for all custom exceptions in this library, providing
+  a `FullMessage` property that includes both the message and the associated value.
+
+```csharp
+    try
+    {
+        // Some operation that might fail
+    }
+    catch (BaseConverterException ex)
+    {
+        Console.WriteLine(ex.FullMessage);
+    }
+ ```
+
+These exceptions ensure that your applications can gracefully handle and debug errors related to base conversions.
+
+## Contributing
 
 Contributions are welcome! If you have suggestions for improvements or encounter any issues, please feel free to open an
 issue or submit a pull request.
 
-## 1.6. License
+## License
 
 This project is licensed under the MIT License. Feel free to use, modify, and distribute it as per the license terms.
 

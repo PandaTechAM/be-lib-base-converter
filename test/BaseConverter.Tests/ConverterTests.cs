@@ -35,7 +35,7 @@ public class ConverterTests
         Assert.Equal(123456789, result3);
         Assert.Equal(9874564789631, result4);
     }
-    
+
     [Fact]
     public void Base36ToBase10NotNull_ConvertsPositiveBase36Number_ReturnsCorrectBase10Value()
     {

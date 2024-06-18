@@ -1,52 +1,28 @@
 using BaseConverter.Attributes;
 using BaseConverter.Filters;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using static BaseConverter.Attributes.PandaParameterBaseConverterAttribute;
+using FluentMinimalApiMapper;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.AddEndpoints();
+
 builder.Services.AddSwaggerGen(
     options =>
     {
-        options.ParameterFilter<PandaParameterBaseConverterAttribute>();
-        options.SchemaFilter<PandaPropertyBaseConverterSwaggerFilter>();
+        options.ParameterFilter<ParameterBaseConverter>();
+        options.SchemaFilter<PropertyBaseConverterFilter>();
     }
 );
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
+app.UseSwagger();
+app.UseSwaggerUI();
 app.MapControllers();
-
+app.MapEndpoints();
 app.Run();
 
 namespace BaseConverter.Demo
 {
-    public class StringToLongModelBinderProvider : IModelBinderProvider
-    {
-        public IModelBinder? GetBinder(ModelBinderProviderContext context)
-        {
-            if (context.Metadata.ModelType == typeof(long) || context.Metadata.ModelType == typeof(long?))
-            {
-                return new StringToLongModelBinder();
-            }
-
-            return null;
-        }
-    }
+    public class Program;
 }

@@ -8,12 +8,12 @@
         <PackageReadmeFile>Readme.md</PackageReadmeFile>
         <Authors>Pandatech</Authors>
         <Copyright>MIT</Copyright>
-        <Version>4.0.0</Version>
+        <Version>4.0.1</Version>
         <PackageId>PandaTech.BaseConverter</PackageId>
         <PackageTags>Pandatech, library, Base36, Converter</PackageTags>
         <Description>This project provides a class called PandaBaseConverter that can convert a number from base 10 to base 36 and vice versa.</Description>
         <RepositoryUrl>https://github.com/PandaTechAM/BaseConverter.git</RepositoryUrl>
-        <PackageReleaseNotes>Reimagined the public api and added new support</PackageReleaseNotes>
+        <PackageReleaseNotes>Swagger bug fix and new extension method introduced for swagger</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>

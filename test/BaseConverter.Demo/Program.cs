@@ -1,5 +1,4 @@
-using BaseConverter.Attributes;
-using BaseConverter.Filters;
+using BaseConverter.Extensions;
 using FluentMinimalApiMapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,8 +9,7 @@ builder.AddEndpoints();
 builder.Services.AddSwaggerGen(
     options =>
     {
-        options.ParameterFilter<ParameterBaseConverter>();
-        options.SchemaFilter<PropertyBaseConverterFilter>();
+        options.AddBaseConverterFilters();
     }
 );
 var app = builder.Build();

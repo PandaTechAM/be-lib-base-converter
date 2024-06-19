@@ -15,12 +15,12 @@ public class ParameterBaseConverter : Attribute, IParameterModelConvention, IPar
 
         if (parameter.Schema.Type == "array")
         {
-            parameter.Schema.Items = new OpenApiSchema { Type = "string", Format = "[0-9a-z]+" };
+            parameter.Schema.Items = new OpenApiSchema { Type = "string", Format = "base36-encoded" };
         }
         else
         {
             parameter.Schema.Type = "string";
-            parameter.Schema.Format = "[0-9a-z]+";
+            parameter.Schema.Format = "base36-encoded";
         }
     }
 

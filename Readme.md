@@ -88,7 +88,16 @@ groupApp.MapGet("query", ([FromQuery] long id) => id)
 groupApp.MapGet("path/{id}", (long id) => id)
         .PathBaseConverter("id");
 
+groupApp.MapPost("parameter", ([AsParameters] Parameter request) => request)
+            .QueryBaseConverter("Prop1", "Prop2");
+
 app.Run();
+
+public class Parameter
+{
+    public long Prop1 { get; set; }
+    public long Prop2 { get; set; }
+}
 ```
 
 ### Controller Parameter Binding
@@ -122,8 +131,7 @@ Integrate with Swagger for enhanced API documentation:
 builder.Services.AddSwaggerGen(
     options =>
     {
-        options.ParameterFilter<ParameterBaseConverter>();
-        options.SchemaFilter<PropertyBaseConverterFilter>();
+        options.AddBaseConverterFilters();
     }
 );
 ```

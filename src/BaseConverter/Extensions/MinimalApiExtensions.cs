@@ -7,8 +7,10 @@ namespace BaseConverter.Extensions;
 
 public static class MinimalApiExtensions
 {
-    public static RouteHandlerBuilder QueryBaseConverter(this RouteHandlerBuilder builder, string queryParamName)
+    public static RouteHandlerBuilder QueryBaseConverter(this RouteHandlerBuilder builder, string queryParamName = "id")
     {
+        builder.WithMetadata(new BaseConverterMetadata("query", queryParamName));
+
         builder.Add(endpointBuilder =>
         {
             var original = endpointBuilder.RequestDelegate;
@@ -38,9 +40,21 @@ public static class MinimalApiExtensions
         });
         return builder;
     }
-
-    public static RouteHandlerBuilder PathBaseConverter(this RouteHandlerBuilder builder, string pathParamName)
+    
+    public static RouteHandlerBuilder QueryBaseConverter(this RouteHandlerBuilder builder, params string[] queryParamNames)
     {
+        foreach (var queryParamName in queryParamNames)
+        {
+            builder.QueryBaseConverter(queryParamName);
+        }
+
+        return builder;
+    }
+
+    public static RouteHandlerBuilder RouteBaseConverter(this RouteHandlerBuilder builder, string routeName = "id")
+    {
+        builder.WithMetadata(new BaseConverterMetadata("route", routeName));
+
         builder.Add(endpointBuilder =>
         {
             var original = endpointBuilder.RequestDelegate;
@@ -48,14 +62,14 @@ public static class MinimalApiExtensions
             {
                 var routeValues = context.Request.RouteValues;
 
-                if (routeValues.TryGetValue(pathParamName, out var pathValue))
+                if (routeValues.TryGetValue(routeName, out var routeValue))
                 {
-                    var originalValue = pathValue?.ToString();
+                    var originalValue = routeValue?.ToString();
                     if (!string.IsNullOrEmpty(originalValue))
                         try
                         {
                             var convertedValue = PandaBaseConverter.Base36ToBase10(originalValue).ToString();
-                            routeValues[pathParamName] = convertedValue;
+                            routeValues[routeName] = convertedValue;
                         }
                         catch (Exception ex)
                         {
@@ -66,6 +80,16 @@ public static class MinimalApiExtensions
                 await original!(context);
             };
         });
+        return builder;
+    }
+    
+    public static RouteHandlerBuilder RouteBaseConverter(this RouteHandlerBuilder builder, params string[] routeNames)
+    {
+        foreach (var routeName in routeNames)
+        {
+            builder.RouteBaseConverter(routeName);
+        }
+
         return builder;
     }
 }

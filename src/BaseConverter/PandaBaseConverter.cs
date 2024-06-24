@@ -5,7 +5,7 @@ namespace BaseConverter;
 
 public static class PandaBaseConverter
 {
-    public static string Base36Chars { get; set; } = "0123456789abcdefghijklmnopqrstuvwxyz";
+    public static string Base36Chars { get; set; } = null!;
 
     public static string Base10ToBase36(long base10Number)
     {

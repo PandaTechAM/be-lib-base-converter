@@ -21,7 +21,6 @@ Add `Pandatech.BaseConverter` to your project via NuGet:
 
 ```shell
 Install-Package Pandatech.BaseConverter
-
 ```
 
 ## Basic Usage
@@ -155,7 +154,7 @@ builder.Services.AddSwaggerGen(
         Console.WriteLine(ex.FullMessage);
         // Output: "Message: Input contains unsupported characters. with Value: invalid-input"
     }
-   ```
+```
 
 - **`InputValidationException`**: Thrown when input validation fails, such as a negative number for base 10 to base 36
   conversion.

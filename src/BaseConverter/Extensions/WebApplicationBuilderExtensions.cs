@@ -20,7 +20,7 @@ public static class WebApplicationBuilderExtensions
         if (base36Chars.Length != 36 || base36Chars.Distinct().Count() != 36)
             throw new InputValidationException("Base36Chars must be 36 characters long");
 
-        if (!base36Chars.All(Chars.ToUpper().Contains))
+        if (!base36Chars.ToUpper().All(Chars.ToUpper().Contains))
             throw new InputValidationException("Base36Chars must contain all digits and letters from a to z");
     }
 }

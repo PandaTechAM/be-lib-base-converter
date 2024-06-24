@@ -7,8 +7,7 @@ public static class WebApplicationBuilderExtensions
 {
     private const string Chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    public static WebApplicationBuilder ConfigureBaseConverter(this WebApplicationBuilder builder,
-        string base36Chars)
+    public static WebApplicationBuilder ConfigureBaseConverter(this WebApplicationBuilder builder, string base36Chars)
     {
         ValidateBase36Chars(base36Chars);
 

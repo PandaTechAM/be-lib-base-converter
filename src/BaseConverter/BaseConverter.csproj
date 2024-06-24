@@ -8,7 +8,7 @@
         <PackageReadmeFile>Readme.md</PackageReadmeFile>
         <Authors>Pandatech</Authors>
         <Copyright>MIT</Copyright>
-        <Version>4.0.3</Version>
+        <Version>4.0.4</Version>
         <PackageId>PandaTech.BaseConverter</PackageId>
         <PackageTags>Pandatech, library, Base36, Converter</PackageTags>
         <Description>This project provides a class called PandaBaseConverter that can convert a number from base 10 to base 36 and vice versa.</Description>
